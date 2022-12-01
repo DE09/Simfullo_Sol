@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include 'base/head.html' %}
+
+<body>
+    FCL 페이지임
+    <input type="text" placeholder="origin" class="origin">
+    <input type="text" placeholder="dest" class="dest">
+    <input type="text" placeholder="line" class="line">
+    <input type="text" placeholder="name" class="name">
+
+    <select id="cur" class="cur">
+        <option value="USD">USD</option>
+        <option value="KRW">KRW</option>
+      </select>
+      <input type="text" placeholder="rate" class="rate" />
+      <select id="unit" class="unit">
+        <option value="20FT">20FT</option>
+        <option value="40FT">40FT</option>
+        <option value="BL">BL</option>
+      </select>
+      <select id="chargeat" class="chargeAt">
+        <option value="origin">origin</option>
+        <option value="freight">freight</option>
+        <option value="destination">destination</option>
+      </select>
+      <input type="text" placeholder="group" class="group" />
+      <button class="save">저장</button>
+
+
+</body>
+
+</html>

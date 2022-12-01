@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    {% include 'base/head.html' %}
+
+
+<body>
+    quotation 페이지입니다.
+    {% include 'base/footer.html' %}
+    <input type="text" placeholder="origin" class="origin">
+    <input type="text" placeholder="dest" class="dest">
+    <select class="incoterms">
+        <option value="EXW">EXW</option>
+        <option value="FOB">FOB</option>
+        <option value="CFR">CFR</option>
+        <option value="DAP">DAP</option>
+    </select>
+    <input type="text" placeholder="cbm" class="cbm">
+    <input type="text" placeholder="kg" class="kg">
+    <button onclick="showQuotation()">견적보기</button>
+
+    <div>
+        <p id="lclquote"></p>
+    </div>
+
+    <script>
+        function showQuotation() {
+            var origin = $('.origin').val();
+            var dest = $('.dest').val();
+            var incoterms = $('.incoterms').val();
+            var cbm = $('.cbm').val();
+            var kg = $('.kg').val();
+
+            param = {
+                origin: origin,
+                dest: dest,
+                incoterms: incoterms,
+                cbm: cbm,
+                kg: kg,
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "{% url 'showquote' %}",
+                data: JSON.stringify(param),
+                success: function (data) {
+                    var lcltotal = data['lcltotal']
+                    $('#lclquote').html('lcl 견적 금액 : ' + lcltotal + '원')
+                    console.log(data['lcltotal'])
+                },
+            });
+        }
+
+    </script>
+</body>
+
+</html>
