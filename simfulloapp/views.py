@@ -52,7 +52,8 @@ def showquote(request):
         q.add(Q(chargeAt='origin')|Q(chargeAt='freight'), q.AND)
 
     rate = lcl.objects.filter(q)
-
+    airotherrate = airother.objects.filter(q)
+    
     lcltotal = 0
     
     for i in range(0,len(rate)):
@@ -74,12 +75,28 @@ def showquote(request):
         lcltotal = lcltotal + total
     
     
-    afc = air.objects.filter(origin=origin, dest=dest)    
-    
     if float(cbm) * 167 > float(kg):
         cw = float(cbm) * 167
     else: 
         cw = float(kg)
+    
+    airother_total = 0
+    for i in range(0,len(airotherrate)):
+        if airotherrate[i].cur == 'USD':
+            if airotherrate[i].unit == 'AWB':
+                total = float(airotherrate[i].rate) * 1400
+            elif airotherrate[i].unit == 'KG':
+                total = float(airotherrate[i].rate) * 1400 * float(cw)
+        else:
+            if airotherrate[i].unit == 'AWB':
+                total = float(airotherrate[i].rate)
+            elif airotherrate[i].unit == 'KG':
+                total = float(airotherrate[i].rate) * float(cw)
+
+        airother_total = airother_total + total
+    
+    afc = air.objects.filter(origin=origin, dest=dest)    
+    
 
     afclist = []
     for i in range(0,len(afc)):
@@ -185,11 +202,14 @@ def showquote(request):
                     afclist.append(minimum)
                 else : 
                     afclist.append((over1000+fsc) * cw)           
-    print(afclist)
 
-        
+
+    airtotal = min(afclist) + airother_total
+    print(airtotal)
+    
     context = {
             'lcltotal' : lcltotal,
+            'airtotal' : airtotal,
         }
     return JsonResponse(context)
 
@@ -255,15 +275,14 @@ def airadd(request):
 def airotheradd(request):
     jsonObject = json.loads(request.body)
     airotheradd = airother.objects.create(
-        airother_origin = jsonObject.get('airother_origin'),
-        airother_dest = jsonObject.get('airother_dest'),
-        airother_consol = jsonObject.get('airother_consol'),
-        airother_line = jsonObject.get('airother_line'),
-        airother_name = jsonObject.get('airother_name'),
-        airother_cur = jsonObject.get('airother_cur'),
-        airother_rate = jsonObject.get('airother_rate'),
-        airother_unit = jsonObject.get('airother_unit'),
-        airother_chargeAt = jsonObject.get('airother_chargeAt'),
+        origin = jsonObject.get('airother_origin'),
+        dest = jsonObject.get('airother_dest'),
+        line = jsonObject.get('airother_line'),
+        name = jsonObject.get('airother_name'),
+        cur = jsonObject.get('airother_cur'),
+        rate = jsonObject.get('airother_rate'),
+        unit = jsonObject.get('airother_unit'),
+        chargeAt = jsonObject.get('airother_chargeAt'),
     )
     
     airotheradd.save()

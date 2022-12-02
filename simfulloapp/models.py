@@ -41,15 +41,14 @@ class air(models.Model):
     via = models.CharField(max_length=15)
     
 class airother(models.Model):
-    airother_origin = models.CharField(max_length=15)
-    airother_dest = models.CharField(max_length=15)
-    airother_consol = models.CharField(max_length=15)
-    airother_line = models.CharField(max_length=15)
-    airother_name = models.CharField(max_length=15)
-    airother_cur = models.CharField(max_length=15)
-    airother_rate = models.CharField(max_length=15)
-    airother_unit = models.CharField(max_length=15)
-    airother_chargeAt = models.CharField(max_length=15)
+    origin = models.CharField(max_length=15)
+    dest = models.CharField(max_length=15)
+    line = models.CharField(max_length=15)
+    name = models.CharField(max_length=15)
+    cur = models.CharField(max_length=15)
+    rate = models.CharField(max_length=15)
+    unit = models.CharField(max_length=15)
+    chargeAt = models.CharField(max_length=15)
     
 
 

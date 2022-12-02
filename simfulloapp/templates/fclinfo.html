@@ -19,13 +19,103 @@
         <option value="40FT">40FT</option>
         <option value="BL">BL</option>
       </select>
-      <select id="chargeat" class="chargeAt">
+      <select id="chargeAt" class="chargeAt">
         <option value="origin">origin</option>
         <option value="freight">freight</option>
         <option value="destination">destination</option>
       </select>
       <input type="text" placeholder="group" class="group" />
       <button class="save">저장</button>
+
+      <table class="">
+        <thead>
+          <tr>
+            <td>origin</td>
+            <td>dest</td>
+            <td>line</td>
+            <td>name</td>
+            <td>cur</td>
+            <td>rate</td>
+            <td>unit</td>
+            <td>chargeAt</td>
+            <td>group</td>
+          </tr>
+        </thead>
+        <tbody class="tbody">
+          {% for i in info %}
+          <tr class="tr{{i.id}}">
+            <td><input type="text" value="{{i.origin}}" class="origin{{i.id}}" disabled /></td>
+            <td><input type="text" value="{{i.dest}}" class="dest{{i.id}}" disabled /></td>
+            <td><input type="text" value="{{i.line}}" class="line{{i.id}}" disabled /></td>
+            <td><input type="text" value="{{i.name}}" class="name{{i.id}}" disabled /></td>
+            <td>
+              <select id="cur" class="cur{{i.id}}" disabled>
+                <option value="{{i.cur}}">{{i.cur}}</option>
+                <option value="====">====</option>
+                <option value="USD">USD</option>
+                <option value="KRW">KRW</option>
+              </select>
+              <input type="text" value="{{i.rate}}" class="rate{{i.id}}" disabled />
+              <select id="unit" class="unit{{i.id}}" disabled>
+                <option value="{{i.unit}}">{{i.unit}}</option>
+                <option value="====">====</option>
+                <option value="20FT">20FT</option>
+                <option value="40FT">40FT</option>
+                <option value="BL">BL</option>
+              </select>
+            </td>
+            <td>
+              <select id="chargeAt" class="chargeAt{{i.id}}" disabled>
+                <option value="{{i.chargeAt}}">{{i.chargeAt}}</option>
+                <option value="====">====</option>
+                <option value="origin">origin</option>
+                <option value="freight">freight</option>
+                <option value="destination">destination</option>
+              </select>
+            </td>
+            <td><input type="text" value="{{i.group}}" class="group{{i.id}}" disabled /></td>
+            <td>
+              <button id="{{i.id}}" class="editbtn{{i.id}}" onclick="editbtn(this.id)">수정</button>
+              <button style="display: none" id="{{i.id}}" class="updatebtn{{i.id}}" onclick="updaterate(this.id)" data-bs-toggle="modal" data-bs-target="#updateModal{{i.id}}">저장</button>
+              <div class="modal fade" id="updateModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">변경사항이 저장되었습니다.</div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <button id="{{i.id}}" class="deletebtn{{i.id}}" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal{{i.id}}">
+                삭제
+              </button>
+              <div class="modal fade" id="deleteModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">정말 삭제하시겠습니까?</div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" id="{{i.id}}"class="btn btn-danger" onclick="deleterate(this.id)" data-bs-dismiss="modal">삭제하기</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <button style="display: none" id="{{i.id}}" class="cancelbtn{{i.id}}" onclick="cancel(this.id)">취소</button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% include 'base/footer.html' %}
 
 
 </body>

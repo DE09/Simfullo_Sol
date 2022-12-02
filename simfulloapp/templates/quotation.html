@@ -46,8 +46,9 @@
                 data: JSON.stringify(param),
                 success: function (data) {
                     var lcltotal = data['lcltotal']
+                    var airtotal = data['airtotal']
                     $('#lclquote').html('lcl 견적 금액 : ' + lcltotal + '원')
-                    console.log(data['lcltotal'])
+                    $('#airquote').html('air 견적 금액 : ' + airtotal + '원')
                 },
             });
         }
