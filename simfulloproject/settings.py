@@ -81,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'simfulloDB',
         'USER':'postgres',
-        'PASSWORD':'2683',
+        'PASSWORD':'petrucci12!@',
         'HOST':'localhost'
     }
 }

@@ -73,6 +73,7 @@ def showquote(request):
                 total = float(rate[i].rate) * float(kg)
     
         lcltotal = lcltotal + total
+<<<<<<< HEAD
     
     
     if float(cbm) * 167 > float(kg):
@@ -100,6 +101,20 @@ def showquote(request):
 
     afclist = []
     for i in range(0,len(afc)):
+=======
+        
+    
+    afc = air.objects.filter(origin=origin , dest = dest)
+    
+    if float(cbm) * 167 > float(kg):
+        cw = float(cbm)*167
+    else : 
+        cw = float(kg)
+    
+    afclist = []
+    for i in range(0,len(afc)):
+        cur = afc[i].cur
+>>>>>>> d8dab3490f36c91c612de187f49bd68b7a94c841
         minimum = float(afc[i].minimum)
         normal = float(afc[i].normal)
         over45 = float(afc[i].over45)
@@ -108,6 +123,7 @@ def showquote(request):
         over500 = float(afc[i].over500)
         over1000 = float(afc[i].over1000)
         fsc = float(afc[i].fsc)
+<<<<<<< HEAD
                 
         if afc[i].cur == 'USD' :
             if cw < 45 :
@@ -207,6 +223,111 @@ def showquote(request):
     airtotal = min(afclist) + airother_total
     print(airtotal)
     
+=======
+        
+        if cur =='USD' :
+            if cw < 45 :
+                if minimum > (normal+fsc)*cw:
+                    afclist.append(minimum*1400)
+                else:
+                    if (normal+fsc)*cw > (over45+fsc)*45:
+                        afclist.append((over45+fsc)*45*1400) 
+                    else : 
+                        afclist.append((normal+fsc)*cw*1400) 
+            elif cw < 100 :
+                if minimum > (over45+fsc)*cw:
+                    afclist.append(minimum*1400)
+                else:
+                    if (over45+fsc)*cw > (over100+fsc)*100:
+                        afclist.append((over100+fsc)*100*1400) 
+                    else : 
+                        afclist.append((over45+fsc)*cw*1400) 
+            elif cw < 300 :
+                if minimum > (over100+fsc)*cw:
+                    afclist.append(minimum*1400)
+                else:
+                    if (over100+fsc)*cw > (over300+fsc)*300:
+                        afclist.append((over300+fsc)*300*1400)
+                    else : 
+                        afclist.append((over100+fsc)*cw*1400) 
+            elif cw < 500 :
+                if minimum > (over300+fsc)*cw:
+                    afclist.append(minimum*1400)
+                else:
+                    if (over300+fsc)*cw > (over500+fsc)*500:
+                        afclist.append((over500+fsc)*500*1400)
+                    else : 
+                        afclist.append((over300+fsc)*cw*1400)
+            elif cw < 1000 :
+                if minimum > (over500+fsc)*cw:
+                    afclist.append(minimum*1400)
+                else:
+                    if (over500+fsc)*cw > (over1000+fsc)*1000:
+                        afclist.append((over1000+fsc)*1000*1400)
+                    else : 
+                        afclist.append((over500+fsc)*cw*1400)
+            else:
+                if minimum > (over1000+fsc)*cw:
+                    afclist.append(minimum*1400)
+                else:
+                    afclist.append((over1000+fsc)*cw*1400)
+                    
+
+        elif cur == 'KRW' :
+            if cw < 45 :
+                if minimum > (normal+fsc)*cw:
+                    afclist.append(minimum)
+                else:
+                    if (normal+fsc)*cw > (over45+fsc)*45:
+                        afclist.append((over45+fsc)*45) 
+                    else : 
+                        afclist.append((normal+fsc)*cw)
+            elif cw < 100 :
+                if minimum > (over45+fsc)*cw:
+                    afclist.append(minimum)
+                else:
+                    if (over45+fsc)*cw > (over100+fsc)*100:
+                        afclist.append((over100+fsc)*100) 
+                    else : 
+                        afclist.append((over45+fsc)*cw) 
+            elif cw < 300 :
+                if minimum > (over100+fsc)*cw:
+                    afclist.append(minimum)
+                else:
+                    if (over100+fsc)*cw > (over300+fsc)*300:
+                        afclist.append((over300+fsc)*300) 
+                    else : 
+                        afclist.append((over100+fsc)*cw) 
+            elif cw < 500 :
+                if minimum > (over300+fsc)*cw:
+                    afclist.append(minimum)
+                else:
+                    if (over300+fsc)*cw > (over500+fsc)*500:
+                        afclist.append((over500+fsc)*500) 
+                    else : 
+                        afclist.append((over300+fsc)*cw) 
+            elif cw < 1000 :
+                if minimum > (over500+fsc)*cw:
+                    afclist.append(minimum)
+                else:
+                    if (over500+fsc)*cw > (over1000+fsc)*1000:
+                        afclist.append((over1000+fsc)*1000) 
+                    else : 
+                        afclist.append((over500+fsc)*cw) 
+            else:
+                if minimum > (over1000+fsc)*cw:
+                    afclist.append(minimum)
+                else:
+                    afclist.append((over1000+fsc)*cw)
+
+    print(afclist)
+
+    
+
+    
+
+        
+>>>>>>> d8dab3490f36c91c612de187f49bd68b7a94c841
     context = {
             'lcltotal' : lcltotal,
             'airtotal' : airtotal,
