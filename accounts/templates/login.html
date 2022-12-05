@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% include 'base/head.html' %}
+<body>
+    로그인페이지
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="username">
+        <input type="password" name="password" placeholder="password">
+        <input type="password" name="password2" placeholder="password2">
+        <button>로그인하기</button>
+    </form>
+    <a href="{% url 'signup' %}"><button>회원가입하기</button></a> 
+
+</body>
+</html>

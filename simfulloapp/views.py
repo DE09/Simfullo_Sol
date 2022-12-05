@@ -53,7 +53,7 @@ def showquote(request):
 
     rate = lcl.objects.filter(q)
     fclrate = fcl.objects.filter(q)
-    afcother = airother.objects.filter(q)
+    airotherrate = airother.objects.filter(q)
     
     fcltotal = 0
     for i in range(0,len(fclrate)):
@@ -92,36 +92,33 @@ def showquote(request):
                 total = float(rate[i].rate) * float(kg)
     
         lcltotal = lcltotal + total
-        
-    afcothertotal = 0
-    for i in range(0,len(afcother)):
-        if afcother[i].cur == 'USD':
-            if afcother[i].unit == 'AWB':
-                total = float(afcother[i].rate) * 1400
-            elif afcother[i].unit == 'KG':
-                total = float(afcother[i].rate) * float(kg)
-        else:
-            if afcother[i].unit == 'AWB':
-                total = float(afcother[i].rate)
-            elif afcother[i].unit == 'KG':
-                total = float(afcother[i].rate) * float(kg)
     
-        afcothertotal = afcothertotal + total
-        
-        
-    
-        
-    
-    afc = air.objects.filter(origin=origin , dest = dest)
     
     if float(cbm) * 167 > float(kg):
-        cw = float(cbm)*167
-    else : 
+        cw = float(cbm) * 167
+    else: 
         cw = float(kg)
     
+    airother_total = 0
+    for i in range(0,len(airotherrate)):
+        if airotherrate[i].cur == 'USD':
+            if airotherrate[i].unit == 'AWB':
+                total = float(airotherrate[i].rate) * 1400
+            elif airotherrate[i].unit == 'KG':
+                total = float(airotherrate[i].rate) * 1400 * float(cw)
+        else:
+            if airotherrate[i].unit == 'AWB':
+                total = float(airotherrate[i].rate)
+            elif airotherrate[i].unit == 'KG':
+                total = float(airotherrate[i].rate) * float(cw)
+
+        airother_total = airother_total + total
+    
+    afc = air.objects.filter(origin=origin, dest=dest)    
+    
+
     afclist = []
     for i in range(0,len(afc)):
-        cur = afc[i].cur
         minimum = float(afc[i].minimum)
         normal = float(afc[i].normal)
         over45 = float(afc[i].over45)
@@ -130,108 +127,108 @@ def showquote(request):
         over500 = float(afc[i].over500)
         over1000 = float(afc[i].over1000)
         fsc = float(afc[i].fsc)
-        
-        if cur =='USD' :
+                
+        if afc[i].cur == 'USD' :
             if cw < 45 :
-                if minimum > (normal+fsc)*cw:
-                    afclist.append(minimum*1400)
-                else:
-                    if (normal+fsc)*cw > (over45+fsc)*45:
-                        afclist.append((over45+fsc)*45*1400) 
+                if minimum > (normal+fsc) * 45:
+                    afclist.append(minimum * 1400)
+                else :
+                    if (normal+fsc) * cw > (over45+fsc) * 45:
+                        afclist.append((over45+fsc) * 45 * 1400)
                     else : 
-                        afclist.append((normal+fsc)*cw*1400) 
+                        afclist.append((normal+fsc) * cw * 1400)
             elif cw < 100 :
-                if minimum > (over45+fsc)*cw:
-                    afclist.append(minimum*1400)
-                else:
-                    if (over45+fsc)*cw > (over100+fsc)*100:
-                        afclist.append((over100+fsc)*100*1400) 
+                if minimum > (over45+fsc) * cw:
+                    afclist.append(minimum * 1400)
+                else : 
+                    if (over45+fsc) * cw > (over100+fsc) * 100:
+                        afclist.append((over100+fsc) * 100 * 1400)
                     else : 
-                        afclist.append((over45+fsc)*cw*1400) 
+                        afclist.append((over45+fsc) * cw * 1400)
             elif cw < 300 :
-                if minimum > (over100+fsc)*cw:
-                    afclist.append(minimum*1400)
-                else:
-                    if (over100+fsc)*cw > (over300+fsc)*300:
-                        afclist.append((over300+fsc)*300*1400)
+                if minimum > (over100+fsc) * cw:
+                    afclist.append(minimum * 1400)
+                else : 
+                    if (over100+fsc) * cw > (over300+fsc) * 300:
+                        afclist.append((over300+fsc) * 300 * 1400)
                     else : 
-                        afclist.append((over100+fsc)*cw*1400) 
+                        afclist.append((over100+fsc) * cw * 1400)
             elif cw < 500 :
-                if minimum > (over300+fsc)*cw:
-                    afclist.append(minimum*1400)
-                else:
-                    if (over300+fsc)*cw > (over500+fsc)*500:
-                        afclist.append((over500+fsc)*500*1400)
+                if minimum > (over300+fsc) * cw:
+                    afclist.append(minimum * 1400)
+                else : 
+                    if (over300+fsc) * cw > (over500+fsc) * 500:
+                        afclist.append((over500+fsc) * 500 * 1400)
                     else : 
-                        afclist.append((over300+fsc)*cw*1400)
+                        afclist.append((over300+fsc) * cw * 1400)
             elif cw < 1000 :
-                if minimum > (over500+fsc)*cw:
-                    afclist.append(minimum*1400)
-                else:
-                    if (over500+fsc)*cw > (over1000+fsc)*1000:
-                        afclist.append((over1000+fsc)*1000*1400)
+                if minimum > (over1000+fsc) * cw:
+                    afclist.append(minimum * 1400)
+                else : 
+                    if (over500+fsc) * cw > (over1000+fsc) * 1000:
+                        afclist.append((over1000+fsc) * 1000 * 1400)
                     else : 
-                        afclist.append((over500+fsc)*cw*1400)
-            else:
-                if minimum > (over1000+fsc)*cw:
-                    afclist.append(minimum*1400)
-                else:
-                    afclist.append((over1000+fsc)*cw*1400)
+                        afclist.append((over500+fsc) * cw * 1400)
+            else : 
+                if minimum > (over1000+fsc) * cw:
+                    afclist.append(minimum * 1400)
+                else : 
+                    afclist.append((over1000+fsc) * cw * 1400)           
                     
-
-        elif cur == 'KRW' :
+        elif afc[i].cur == 'KRW' :
             if cw < 45 :
-                if minimum > (normal+fsc)*cw:
+                if minimum > (normal+fsc) * 45:
                     afclist.append(minimum)
-                else:
-                    if (normal+fsc)*cw > (over45+fsc)*45:
-                        afclist.append((over45+fsc)*45) 
+                else :
+                    if (normal+fsc) * cw > (over45+fsc) * 45:
+                        afclist.append((over45+fsc) * 45)
                     else : 
-                        afclist.append((normal+fsc)*cw)
+                        afclist.append((normal+fsc) * cw)
             elif cw < 100 :
-                if minimum > (over45+fsc)*cw:
+                if minimum > (over45+fsc) * cw:
                     afclist.append(minimum)
-                else:
-                    if (over45+fsc)*cw > (over100+fsc)*100:
-                        afclist.append((over100+fsc)*100) 
+                else : 
+                    if (over45+fsc) * cw > (over100+fsc) * 100:
+                        afclist.append((over100+fsc) * 100)
                     else : 
-                        afclist.append((over45+fsc)*cw) 
+                        afclist.append((over45+fsc) * cw)
             elif cw < 300 :
-                if minimum > (over100+fsc)*cw:
+                if minimum > (over100+fsc) * cw:
                     afclist.append(minimum)
-                else:
-                    if (over100+fsc)*cw > (over300+fsc)*300:
-                        afclist.append((over300+fsc)*300) 
+                else : 
+                    if (over100+fsc) * cw > (over300+fsc) * 300:
+                        afclist.append((over300+fsc) * 300)
                     else : 
-                        afclist.append((over100+fsc)*cw) 
+                        afclist.append((over100+fsc) * cw)
             elif cw < 500 :
-                if minimum > (over300+fsc)*cw:
+                if minimum > (over300+fsc) * cw:
                     afclist.append(minimum)
-                else:
-                    if (over300+fsc)*cw > (over500+fsc)*500:
-                        afclist.append((over500+fsc)*500) 
+                else : 
+                    if (over300+fsc) * cw > (over500+fsc) * 500:
+                        afclist.append((over500+fsc) * 500)
                     else : 
-                        afclist.append((over300+fsc)*cw) 
+                        afclist.append((over300+fsc) * cw)
             elif cw < 1000 :
-                if minimum > (over500+fsc)*cw:
+                if minimum > (over1000+fsc) * cw:
                     afclist.append(minimum)
-                else:
-                    if (over500+fsc)*cw > (over1000+fsc)*1000:
-                        afclist.append((over1000+fsc)*1000) 
+                else : 
+                    if (over500+fsc) * cw > (over1000+fsc) * 1000:
+                        afclist.append((over1000+fsc) * 1000)
                     else : 
-                        afclist.append((over500+fsc)*cw) 
-            else:
-                if minimum > (over1000+fsc)*cw:
+                        afclist.append((over500+fsc) * cw)
+            else : 
+                if minimum > (over1000+fsc) * cw:
                     afclist.append(minimum)
-                else:
-                    afclist.append((over1000+fsc)*cw)
+                else : 
+                    afclist.append((over1000+fsc) * cw)           
 
-    airtotal = afcothertotal + min(afclist)
-        
+
+    airtotal = min(afclist) + airother_total
+    print(airtotal)
+    
     context = {
             'lcltotal' : lcltotal,
             'airtotal' : airtotal,
-
         }
     return JsonResponse(context)
 

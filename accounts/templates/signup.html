@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% include 'base/head.html' %}
+<body>
+    회원가입페이지
+    <form method="POST">
+        {% csrf_token %}
+    <input type="text" name="username" placeholder="username">
+    <input type="password" name="password" placeholder="password">
+    <input type="password" name="password2" placeholder="password2">
+    <input type="text" name="nickname" placeholder="nickname">
+    <input type="text" name="email" placeholder="email">
+    <input type="text" name="company" placeholder="company">
+    <button>회원가입하기</button>
+    </form>
+</body>
+</html>

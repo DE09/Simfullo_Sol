@@ -1,7 +1,15 @@
-    <!DOCTYPE html>
-    <html lang="en">
-        {% include 'base/head.html' %}
-    <body>
-     index
-    </body>
-    </html>
+<!DOCTYPE html>
+<html lang="en">
+{% include 'base/head.html' %}
+
+<body>
+    index
+    <a href="{% url 'airinfo' %}"><button>AIR 운임페이지</button></a>
+    <a href="{% url 'lclinfo' %}"><button>LCL 운임페이지</button></a>
+    <a href="{% url 'fclinfo' %}"><button>FCL 운임페이지</button></a>
+    <a href="{% url 'quotation' %}"><button>견적페이지</button></a>
+    <a href="{% url 'login' %}"><button>로그인</button></a>
+    <a href="accounts/logout"><button>로그아웃</button></a>
+</body>
+
+</html>
