@@ -147,7 +147,6 @@
 <br>
     <input type="text" placeholder="origin" class="airother_origin" />
     <input type="text" placeholder="dest" class="airother_dest" />
-    <input type="text" placeholder="consol" class="airother_consol">
     <input type="text" placeholder="line" class="airother_line" />
     <input type="text" placeholder="name" class="airother_name" />
 
@@ -157,7 +156,7 @@
     </select>
     <input type="text" placeholder="rate" class="airother_rate" />
     <select id="unit" class="airother_unit">
-        <option value="BL">AWB</option>
+        <option value="AWB">AWB</option>
         <option value="KG">KG</option>
     </select>
     <select id="chargeat" class="airother_chargeAt">
@@ -183,23 +182,22 @@
         <tbody class="airother_tbody">
             {% for i in airotherinfo %}
             <tr class="airother_tr{{i.id}}">
-                <td><input type="text" value="{{i.airother_origin}}" class="airother_origin{{i.id}}" disabled /></td>
-                <td><input type="text" value="{{i.airother_dest}}" class="airother_dest{{i.id}}" disabled /></td>
-                <td><input type="text" value="{{i.airother_consol}}" class="airother_consol{{i.id}}" disabled /></td>
-                <td><input type="text" value="{{i.airother_line}}" class="airother_line{{i.id}}" disabled /></td>
-                <td><input type="text" value="{{i.airother_name}}" class="airother_name{{i.id}}" disabled /></td>
+                <td><input type="text" value="{{i.origin}}" class="airother_origin{{i.id}}" disabled /></td>
+                <td><input type="text" value="{{i.dest}}" class="airother_dest{{i.id}}" disabled /></td>
+                <td><input type="text" value="{{i.line}}" class="airother_line{{i.id}}" disabled /></td>
+                <td><input type="text" value="{{i.name}}" class="airother_name{{i.id}}" disabled /></td>
                 <td>
                     <select id="cur" class="airother_cur{{i.id}}" disabled>
-                        <option value="{{i.airother_cur}}">{{i.airother_cur}}</option>
+                        <option value="{{i.cur}}">{{i.cur}}</option>
                         <option value="====">====</option>
                         <option value="USD">USD</option>
                         <option value="KRW">KRW</option>
                     </select>
                 </td>
-                <td><input type="text" value="{{i.airother_rate}}" class="airother_rate{{i.id}}" disabled /></td>
+                <td><input type="text" value="{{i.rate}}" class="airother_rate{{i.id}}" disabled /></td>
                 <td>
                     <select id="unit" class="airother_unit{{i.id}}" disabled>
-                        <option value="{{i.airother_unit}}">{{i.airother_unit}}</option>
+                        <option value="{{i.unit}}">{{i.unit}}</option>
                         <option value="====">====</option>
                         <option value="AWB">AWB</option>
                         <option value="KG">KG</option>
@@ -207,7 +205,7 @@
                 </td>
                 <td>
                     <select id="" class="airother_chargeAt{{i.id}}" disabled>
-                        <option value="{{i.airother_chargeAt}}">{{i.airother_chargeAt}}</option>
+                        <option value="{{i.chargeAt}}">{{i.chargeAt}}</option>
                         <option value="====">====</option>
                         <option value="origin">origin</option>
                         <option value="freight">freight</option>
@@ -454,7 +452,6 @@
             param = {
                 airother_origin: $('.airother_origin').val(),
                 airother_dest: $('.airother_dest').val(),
-                airother_consol: $('.airother_consol').val(),
                 airother_line: $('.airother_line').val(),
                 airother_name: $('.airother_name').val(),
                 airother_cur: $('.airother_cur').val(),
@@ -465,7 +462,6 @@
 
             var airother_origin = $('.airother_origin').val()
             var airother_dest = $('.airother_dest').val()
-            var airother_consol = $('.airother_consol').val()
             var airother_line = $('.airother_line').val()
             var airother_name = $('.airother_name').val()
             var airother_cur = $('.airother_cur').val()
@@ -483,7 +479,6 @@
                                 <td>${id}</td>
                                 <td>${airother_origin}</td>
                                 <td>${airother_dest}</td>
-                                <td>${airother_consol}</td>
                                 <td>${airother_line}</td>
                                 <td>${airother_name}</td>
                                 <td>${airother_cur}</td>
@@ -505,7 +500,6 @@
             $(".airother_editbtn" + id).css("display", "none");
             $(".airother_origin" + id).removeAttr("disabled");
             $(".airother_dest" + id).removeAttr("disabled");
-            $(".airother_consol" + id).removeAttr("disabled");
             $(".airother_line" + id).removeAttr("disabled");
             $(".airother_name" + id).removeAttr("disabled");
             $(".airother_cur" + id).removeAttr("disabled");
@@ -522,7 +516,6 @@
             $(".airother_editbtn" + id).css("display", "");
             $(".airother_origin" + id).attr("disabled", true);
             $(".airother_dest" + id).attr("disabled", true);
-            $(".airother_consol" + id).attr("disabled", true);
             $(".airother_line" + id).attr("disabled", true);
             $(".airother_name" + id).attr("disabled", true);
             $(".airother_cur" + id).attr("disabled", true);
@@ -535,7 +528,6 @@
         function airother_updaterate(id) {
             param = {
                 id: id,
-                consol: $('.airother_consol' + id).val(),
                 line: $('.airother_line' + id).val(),
                 name: $('.airother_name' + id).val(),
                 cur: $('.airother_cur' + id).val(),
@@ -555,7 +547,6 @@
                     $(".airother_editbtn" + id).css("display", "");
                     $(".airother_origin" + id).attr("disabled", true);
                     $(".airother_dest" + id).attr("disabled", true);
-                    $(".airother_consol" + id).attr("disabled", true);
                     $(".airother_line" + id).attr("disabled", true);
                     $(".airother_name" + id).attr("disabled", true);
                     $(".airother_cur" + id).attr("disabled", true);

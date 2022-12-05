@@ -1,6 +1,6 @@
 from django.shortcuts import render
 import json
-from .models import lcl, air, airother
+from .models import lcl, air, airother , fcl
 from django.http import JsonResponse
 from django.db.models import Q
 
@@ -52,9 +52,29 @@ def showquote(request):
         q.add(Q(chargeAt='origin')|Q(chargeAt='freight'), q.AND)
 
     rate = lcl.objects.filter(q)
+    fclrate = fcl.objects.filter(q)
+    afcother = airother.objects.filter(q)
+    
+    fcltotal = 0
+    for i in range(0,len(fclrate)):
+        if fclrate[i].cur == 'USD':
+            if fclrate[i].unit == 'R/TON':
+                total = float(fclrate[i].rate) * 1400 * float(cbm)
+            elif fclrate[i].unit == 'BL':
+                total = float(fclrate[i].rate) * 1400
+            elif fclrate[i].unit == 'KG':
+                total = float(fclrate[i].rate) * float(kg)
+        else:
+            if fclrate[i].unit == 'R/TON':
+                total = float(fclrate[i].rate) * float(cbm)
+            elif fclrate[i].unit == 'BL':
+                total = float(fclrate[i].rate)
+            elif fclrate[i].unit == 'KG':
+                total = float(fclrate[i].rate) * float(kg)
+    
+        fcltotal = fcltotal + total
 
     lcltotal = 0
-    
     for i in range(0,len(rate)):
         if rate[i].cur == 'USD':
             if rate[i].unit == 'R/TON':
@@ -72,6 +92,24 @@ def showquote(request):
                 total = float(rate[i].rate) * float(kg)
     
         lcltotal = lcltotal + total
+        
+    afcothertotal = 0
+    for i in range(0,len(afcother)):
+        if afcother[i].cur == 'USD':
+            if afcother[i].unit == 'AWB':
+                total = float(afcother[i].rate) * 1400
+            elif afcother[i].unit == 'KG':
+                total = float(afcother[i].rate) * float(kg)
+        else:
+            if afcother[i].unit == 'AWB':
+                total = float(afcother[i].rate)
+            elif afcother[i].unit == 'KG':
+                total = float(afcother[i].rate) * float(kg)
+    
+        afcothertotal = afcothertotal + total
+        
+        
+    
         
     
     afc = air.objects.filter(origin=origin , dest = dest)
@@ -188,15 +226,11 @@ def showquote(request):
                 else:
                     afclist.append((over1000+fsc)*cw)
 
-    print(afclist)
-
-    
-
-    
-
+    airtotal = afcothertotal + min(afclist)
         
     context = {
             'lcltotal' : lcltotal,
+            'airtotal' : airtotal,
 
         }
     return JsonResponse(context)
@@ -263,15 +297,14 @@ def airadd(request):
 def airotheradd(request):
     jsonObject = json.loads(request.body)
     airotheradd = airother.objects.create(
-        airother_origin = jsonObject.get('airother_origin'),
-        airother_dest = jsonObject.get('airother_dest'),
-        airother_consol = jsonObject.get('airother_consol'),
-        airother_line = jsonObject.get('airother_line'),
-        airother_name = jsonObject.get('airother_name'),
-        airother_cur = jsonObject.get('airother_cur'),
-        airother_rate = jsonObject.get('airother_rate'),
-        airother_unit = jsonObject.get('airother_unit'),
-        airother_chargeAt = jsonObject.get('airother_chargeAt'),
+        origin = jsonObject.get('airother_origin'),
+        dest = jsonObject.get('airother_dest'),
+        line = jsonObject.get('airother_line'),
+        name = jsonObject.get('airother_name'),
+        cur = jsonObject.get('airother_cur'),
+        rate = jsonObject.get('airother_rate'),
+        unit = jsonObject.get('airother_unit'),
+        chargeAt = jsonObject.get('airother_chargeAt'),
     )
     
     airotheradd.save()
@@ -376,13 +409,12 @@ def airotherupdate(request):
     jsonObject = json.loads(request.body)
     airotherupdate = airother.objects.filter(id=jsonObject.get('id'))
     airotherupdate.update(
-        airother_consol = jsonObject.get('consol'),
-        airother_line = jsonObject.get('line'),
-        airother_name = jsonObject.get('name'),
-        airother_cur = jsonObject.get('cur'),
-        airother_rate = jsonObject.get('rate'),
-        airother_unit = jsonObject.get('unit'),
-        airother_chargeAt = jsonObject.get('chargeAt'),
+        line = jsonObject.get('line'),
+        name = jsonObject.get('name'),
+        cur = jsonObject.get('cur'),
+        rate = jsonObject.get('rate'),
+        unit = jsonObject.get('unit'),
+        chargeAt = jsonObject.get('chargeAt'),
     )
 
     context = {
